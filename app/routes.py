@@ -6,7 +6,7 @@ from flask import render_template
 @app.route("/index")
 def index():
     context = {
-        "user": {"username": "vlad"},
+        "user" : {"username": "vlad"},
         "title": "Hillel"
     }
-    return render_template("index.html", user=user)
+    return render_template("index.html", **context)
