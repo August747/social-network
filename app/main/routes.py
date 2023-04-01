@@ -1,12 +1,14 @@
-from app import app
+from app.main import bp
 from flask import render_template
 
 
-@app.route("/")
-@app.route("/index")
+@bp.route("/")
+@bp.route("/index")
 def index():
     context = {
         "user" : {"username": "vlad"},
         "title": "Hillel"
     }
     return render_template("index.html", **context)
+
+
