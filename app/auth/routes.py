@@ -11,9 +11,9 @@ def login():
     return render_template("auth/login.html", form=form)
 
 
-@bp.route("/index", methods=["GET", "POST"])
+@bp.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        return redirect(url_for("index"))
-    return render_template("auth/login.html", form=form)
+        return redirect(url_for("about"))
+    return render_template("auth/register.html", form=form)
