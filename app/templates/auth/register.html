@@ -6,7 +6,7 @@
 
 {% block content %}
 <div>
-    <form method="POST" action="">
+    <form method="GET" action="">
     {{ form.hidden_tag() }}
     {{ form.username.label }} {{ form.username(size=32) }} <br>
     {{ form.email.label }} {{ form.email(size=32) }}<br>
