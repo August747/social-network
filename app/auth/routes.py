@@ -7,7 +7,7 @@ from .forms import LoginForm, RegisterForm
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
     return render_template("auth/login.html", form=form)
 
 
@@ -15,5 +15,5 @@ def login():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        return redirect(url_for("about"))
+        return redirect(url_for("main.about"))
     return render_template("auth/register.html", form=form)
