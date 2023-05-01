@@ -1,22 +1,74 @@
 from app.auth import bp
 from flask import render_template, redirect, url_for, flash
 from .forms import LoginForm, RegisterForm
+from flask_login import current_user, login_user, logout_user, login_required
+
+from .. import db
+from ..models import User, Profile
 
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("auth.profile"))
     form = LoginForm()
     if form.validate_on_submit():
-        flash(f"Submited username={form.data['username']}, remember={form.data['remember']}", category='success')
-        return redirect(url_for("main.index"))
+        user = User.query.filter_by(username=form.username.data).first()
+
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username/password', category="error")
+            return redirect(url_for("auth.login"))
+
+        login_user(user, remember=form.remember.data)
+
+        return redirect(url_for("auth.profile"))
+
     return render_template("auth/login.html", form=form)
+
+
+from flask import flash
 
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        flash(f"Registered Username={form.data['username']}, Email={form.data['email']}", category="success")
+    if current_user.is_authenticated:
         return redirect(url_for("main.index"))
 
+    form = RegisterForm()
+    if form.validate_on_submit():
+        existing_user = User.query.filter_by(email=form.email.data).first()
+        if existing_user:
+            flash('Email address already exists. Please use a different email address.', category='error')
+            return redirect(url_for('auth.register'))
+
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+
+        db.session.add(user)
+        db.session.commit()
+
+        profile = Profile(first_name=form.first_name.data,
+                          last_name=form.last_name.data,
+                          linkedin_url=form.linkedin_url.data,
+                          facebook_url=form.facebook_url.data,
+                          user_id=user.id)
+        db.session.add(profile)
+        db.session.commit()
+
+        flash("Successfully registered!", category='success')
+
+        return redirect(url_for("auth.login"))
+
     return render_template("auth/register.html", form=form)
+
+
+@bp.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("auth.login"))
+
+
+@bp.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html', user=current_user, profile=current_user.profile)
