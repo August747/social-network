@@ -1,4 +1,6 @@
 from flask import Flask
+#from flask_jwt_extended import JWTManager
+
 from config import Config
 from flask_login import current_user
 from flask_sqlalchemy import SQLAlchemy
@@ -17,6 +19,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
 
     from .main import bp as main_bp
     app.register_blueprint(main_bp)
@@ -24,14 +27,20 @@ def create_app():
     from .auth import bp as auth_bp
     app.register_blueprint(auth_bp)
 
-    from .models import User
+    from .faker import bp as faker_bp
+    app.register_blueprint(faker_bp)
+
+    from .post import bp as post_bp
+    app.register_blueprint(post_bp)
+
+    from .user import bp as user_bp
+    app.register_blueprint(user_bp)
+
+    from . import models
 
     @login_manager.user_loader
     def load_user(user_id):
         return models.User.query.get(user_id)
-
-    from .faker import bp as faker_bp
-    app.register_blueprint(faker_bp)
 
     @app.context_processor
     def context_processor():

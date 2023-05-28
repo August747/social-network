@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}
-    {% if title %}
-        {{title}}
-    {% endif %}
-{% endblock %}
-
 {% block content %}
-    {{ user.username }}
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
 {% endblock %}

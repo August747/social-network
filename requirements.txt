@@ -21,3 +21,7 @@ alembic==1.10.3
 faker==18.3.1
 flake8==5.0.4
 psycopg2-binary==2.9.6
+flask-jwt-extended==4.4.4
+
+
+marshmallow~=3.19.0

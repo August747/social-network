@@ -1,3 +1,5 @@
+from wtforms import form
+
 from app.auth import bp
 from flask import render_template, redirect, url_for, flash
 from .forms import LoginForm, RegisterForm
@@ -71,4 +73,4 @@ def logout():
 @bp.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', user=current_user, profile=current_user.profile)
+    return render_template('user/profile.html', user=current_user, profile=current_user.profile)
