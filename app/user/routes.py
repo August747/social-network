@@ -43,4 +43,5 @@ def profile(username):
         form.last_name.data = user.profile.last_name
         form.linkedin_url.data = user.profile.linkedin_url
         form.facebook_url.data = user.profile.facebook_url
+        form.bio.data = user.profile.bio
     return render_template('user/profile.html', user=user, form=form)

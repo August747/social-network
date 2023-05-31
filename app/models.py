@@ -29,6 +29,8 @@ class User(BaseModel, UserMixin):
     dislikes = db.relationship(
         'Dislike', backref='user', lazy='dynamic', primaryjoin='User.id==Dislike.user_id', cascade="all,delete",
     )
+    followers = db.relationship("Follow", backref="followee", foreign_keys='Follow.followee_id')
+    following = db.relationship("Follow", backref="follower", foreign_keys='Follow.follower_id')
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()

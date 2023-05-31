@@ -12,7 +12,7 @@ from ..models import User, Profile
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("auth.profile"))
+        return redirect(url_for("main.index"))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -23,7 +23,7 @@ def login():
 
         login_user(user, remember=form.remember.data)
 
-        return redirect(url_for("auth.profile"))
+        return redirect(url_for("user.blog"))
 
     return render_template("auth/login.html", form=form)
 
@@ -70,7 +70,3 @@ def logout():
     return redirect(url_for("auth.login"))
 
 
-@bp.route('/profile')
-@login_required
-def profile():
-    return render_template('user/profile.html', user=current_user, profile=current_user.profile)

@@ -1,4 +1,4 @@
-from flask import flash, redirect, url_for, render_template, request, abort
+from flask import flash, redirect, request, url_for, render_template, abort
 from flask_login import login_required, current_user
 
 from app import db
@@ -12,7 +12,7 @@ from app.post.forms import PostForm
 def create():
     form = PostForm()
 
-    if request.method == 'POST':
+    if request.method == "POST":
         if form.validate_on_submit():
             post = Post(title=form.title.data, content=form.content.data, author=current_user)
             db.session.add(post)
@@ -22,9 +22,9 @@ def create():
             title = form.title.data
 
             if not title or len(title) < 2:
-                flash('Title must be at least 3 characters long', category='error')
+                flash('Title must be at least 3 characters long', category="error")
 
-        return redirect(url_for('user.blog'))
+        return redirect(url_for("user.blog"))
     return render_template('user/blog.html', title='Create Post', form=form)
 
 
@@ -32,6 +32,7 @@ def create():
 @login_required
 def like(post_id):
     post = Post.query.get_or_404(post_id)
+
     if Like.query.filter_by(user=current_user, post=post).count() > 0:
         flash('You have already liked this post!', 'warning')
     else:
@@ -56,10 +57,10 @@ def dislike(post_id):
     return redirect(request.referrer)
 
 
-@bp.route('/<int:post_id>/dislike', methods=['GET', 'POST'])
+@bp.route('/<int:post_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete(post_id):
-    post = Post.querry.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
 

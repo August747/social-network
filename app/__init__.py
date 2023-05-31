@@ -1,6 +1,6 @@
 from flask import Flask
-#from flask_jwt_extended import JWTManager
-
+from flask_jwt_extended import JWTManager
+from datetime import datetime
 from config import Config
 from flask_login import current_user
 from flask_sqlalchemy import SQLAlchemy
@@ -10,6 +10,7 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
+jwt = JWTManager()
 
 
 def create_app():
@@ -20,6 +21,7 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
+    jwt.init_app(app)
 
     from .main import bp as main_bp
     app.register_blueprint(main_bp)
@@ -35,6 +37,9 @@ def create_app():
 
     from .user import bp as user_bp
     app.register_blueprint(user_bp)
+
+    from .api import bp as api_bp
+    app.register_blueprint(api_bp)
 
     from . import models
 
@@ -52,4 +57,12 @@ def create_app():
 
 
 app = create_app()
-from .main import routes
+#from .main import routes
+
+
+#@app.before_request
+#def before_request():
+#    if current_user.is_authenticated:
+#        if current_user.prtofile:
+#            current_user.profile.last_seen = datetime.utcnow()
+#            db.session.commit()
