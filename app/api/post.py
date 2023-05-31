@@ -11,7 +11,6 @@ from flask_login import current_user
 class PostResource(Resource):
     method_decorators = [jwt_required()]
 
-    @jwt_required()
     def get(self, post_id):
         post = db.session.query(Post).filter(Post.id == post_id).first_or_404()
         return jsonify(PostSchema().dump(post, many=False))

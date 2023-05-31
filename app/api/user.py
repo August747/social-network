@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_login import login_required
 from flask_restful import Resource
 from flask import jsonify, request
@@ -10,6 +11,8 @@ user_service = UserService()
 
 
 class UsersResource(Resource):
+    method_decorators = [jwt_required()]
+
     @login_required
     def get(self):
 
