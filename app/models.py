@@ -1,6 +1,8 @@
 from datetime import datetime
 from hashlib import md5
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -29,6 +31,11 @@ class User(BaseModel, UserMixin):
     dislikes = db.relationship(
         'Dislike', backref='user', lazy='dynamic', primaryjoin='User.id==Dislike.user_id', cascade="all,delete",
     )
+
+    @property
+    def sample_property(self):
+        return True
+
     followers = db.relationship("Follow", backref="followee", foreign_keys='Follow.followee_id')
     following = db.relationship("Follow", backref="follower", foreign_keys='Follow.follower_id')
 
@@ -44,6 +51,10 @@ class User(BaseModel, UserMixin):
 
     def __repr__(self):
         return f'{self.username}({self.email})'
+
+    @hybrid_property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Profile(BaseModel):

@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from datetime import datetime
 from config import Config
 from flask_login import current_user
 from flask_sqlalchemy import SQLAlchemy
@@ -43,6 +42,7 @@ def create_app():
 
     from . import models
 
+
     @login_manager.user_loader
     def load_user(user_id):
         return models.User.query.get(user_id)
@@ -57,11 +57,11 @@ def create_app():
 
 
 app = create_app()
-#from .main import routes
+# from .main import routes
 
 
-#@app.before_request
-#def before_request():
+# @app.before_request
+# def before_request():
 #    if current_user.is_authenticated:
 #        if current_user.prtofile:
 #            current_user.profile.last_seen = datetime.utcnow()
