@@ -1,4 +1,4 @@
-f/home/vboxuser/PycharmProjects/scraping-souprom app import db
+from app import db
 from app.models import Post, User
 from app.post.forms import PostForm
 from app.user import bp
