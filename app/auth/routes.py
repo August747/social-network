@@ -5,6 +5,7 @@ from flask_login import current_user, login_user, logout_user
 
 from .. import db
 from ..models import User, Profile
+from flask import flash
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -24,9 +25,6 @@ def login():
         return redirect(url_for("user.blog"))
 
     return render_template("auth/login.html", form=form)
-
-
-from flask import flash
 
 
 @bp.route("/register", methods=["GET", "POST"])
