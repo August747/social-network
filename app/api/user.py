@@ -15,7 +15,6 @@ class UsersResource(Resource):
 
     @login_required
     def get(self):
-
         ordered = request.args.get('ordered', type=bool)
 
         users_query = db.session.query(User)
@@ -49,4 +48,3 @@ class UserResource(Resource):
     def delete(self, user_id):
         status = user_service.delete(user_id)
         return jsonify(status=status)
-

@@ -42,7 +42,6 @@ def create_app():
 
     from . import models
 
-
     @login_manager.user_loader
     def load_user(user_id):
         return models.User.query.get(user_id)
