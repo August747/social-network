@@ -1,9 +1,7 @@
-from wtforms import form
-
 from app.auth import bp
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for
 from .forms import LoginForm, RegisterForm
-from flask_login import current_user, login_user, logout_user, login_required
+from flask_login import current_user, login_user, logout_user
 
 from .. import db
 from ..models import User, Profile
@@ -68,5 +66,3 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for("auth.login"))
-
-

@@ -36,5 +36,3 @@ class RegisterForm(LoginForm):
     linkedin_url = StringField("Linkedin", description='Optional')
     facebook_url = StringField("Facebook", description='Optional')
     submit = SubmitField("Register", description='Optional')
-
-
